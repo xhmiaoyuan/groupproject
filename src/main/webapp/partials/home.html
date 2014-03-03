@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!-- This is a partial, and is templated by AngularJS -->
+<div>
+	<h1>Welcome to Online Booking System!</h1>
+
+	<div>
+		<p>Hello please select a service</p>
+	</div>
+
+	<!-- Standard HTML form, with the submit function bound to the register() function defined in the the controller -->
+	<form ng-submit="registercustomer()">
+		<h2>Please select a service</h2>
+		<input ng-show="!showflight" ng-click="fshowflight()" type="button"
+			value="Create flight"><input ng-show="!showcustomer"
+			ng-click="fshowcustomer()" type="button" value="Create Customer">
+		<fieldset ng-show="showcustomer">
+			<legend>Register a member:</legend>
+			<!-- Each input is bound to a property on the prototype newMember object -->
+			<div>
+				<label for="name">Name:</label> <input type="text" name="name"
+					id="name" ng-model="newMember.name" placeholder="Your Name"
+					required autofocus /> <span class="error" ng-show="cerrors.name">{{cerrors.name}}</span>
+			</div>
+			<div>
+				<label for="email">Email:</label> <input type="email" name="email"
+					id="email" ng-model="newMember.email" placeholder="Your Email"
+					required /> <span class="error" ng-show="cerrors.email">{{cerrors.email}}</span>
+			</div>
+			<div>
+				<label for="phoneNumber">Phone:</label> <input type="tel"
+					name="phoneNumber" id="phoneNumber"
+					ng-model="newMember.phoneNumber" pattern="[0-9]{10,12}"
+					placeholder="Your Phone #" required /> <span class="error"
+					ng-show="cerrors.phoneNumber">{{cerrors.phoneNumber}}</span>
+			</div>
+
+			<!-- We output a list of success messages (appropriately styled!) for the form. -->
+			<ul ng-hide="!csuccessMessages" class="success">
+				<li ng-repeat="message in csuccessMessages">{{message}}</li>
+			</ul>
+
+			<!-- Output the list of error messages if any. -->
+			<ul ng-hide="!cerrorMessages" class="error">
+				<li ng-repeat="message in cerrorMessages">{{message}}</li>
+			</ul>
+
+			<!-- There are two buttons, the default submit action (which is bound for the whole form), and a reset button, that clears the form. -->
+			<div>
+				<input type="submit" id="register" value="Register" /> <input
+					type="button" ng-click="resetcustomer()" name="cancel" id="cancel"
+					value="Cancel" />
+			</div>
+		</fieldset>
+	</form>
+	<form ng-submit="registerflight()">
+		<fieldset ng-show="showflight">
+			<legend>Register a flight:</legend>
+			<!-- Each input is bound to a property on the prototype newMember object -->
+
+			<div>
+				<label for="name">ID:</label> <input type="text" name="name"
+					id="name" ng-model="newFlight.flightno" placeholder="flightId"
+					required autofocus /> <span class="error" ng-show="ferrors.name">{{ferrors.flightno}}</span>
+			</div>
+			
+			<div>
+				<label for="email">name:</label> <input type="text" name="email"
+					id="email" ng-model="newFlight.name" placeholder="flightName"
+					required /> <span class="error" ng-show="ferrors.email">{{ferrors.name}}</span>
+			</div>
+			<div>
+				<label for="phoneNumber">price:</label> <input type="text"
+					phoneNumber" id="phoneNumber" ng-model="newFlight.price"
+					placeholder="Price" required /> <span class="error"
+					ng-show="ferrors.phoneNumber">{{ferrors.price}}</span>
+			</div>
+
+			<!-- We output a list of success messages (appropriately styled!) for the form. -->
+			<ul ng-hide="!fsuccessMessages" class="success">
+				<li ng-repeat="message in fsuccessMessages">{{message}}</li>
+			</ul>
+
+			<!-- Output the list of error messages if any. -->
+			<ul ng-hide="!ferrorMessages" class="error">
+				<li ng-repeat="message in ferrorMessages">{{message}}</li>
+			</ul>
+
+			<!-- There are two buttons, the default submit action (which is bound for the whole form), and a reset button, that clears the form. -->
+			<div>
+				<input type="submit" id="register" value="Register" /> <input
+					type="button" ng-click="resetflight()" name="cancel" id="cancel"
+					value="Cancel" />
+			</div>
+		</fieldset>
+  </form>
+		<form >
+		<!-- A list of registered members -->
+		<h2>Customer</h2>
+		<!-- If there are no members registered, instead of showing the table, we show a simple message. -->
+		<em ng-show="members.length == 0">No registered customers.</em>
+		<table ng-hide="members.length == 0" class="simpletablestyle">
+			<thead>
+				<tr>
+					<th ng-show="bookflag">Book</th>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Phone #</th>
+					<th>REST URL</th>
+
+				</tr>
+			</thead>
+			<!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
+			<tr ng-repeat="member in members | orderBy:orderBy">
+				<td ng-show="bookflag"><input type="radio" ng-model="book.customer" value={{member.id}} name="rd1"/></input></td>
+				<td>{{member.id}}</td>
+				<td>{{member.name}}</td>
+				<td>{{member.email}}</td>
+				<td>{{member.phoneNumber}}</td>
+				<td><a href="rest/customers/{{member.id}}">/rest/customers/{{member.id}}</a>
+			</tr>
+		</table>
+		<h2>Flights</h2>
+		<!-- If there are no members registered, instead of showing the table, we show a simple message. -->
+		<em ng-show="flights.length == 0">No registered flights.</em>
+		<table ng-hide="flights.length == 0" class="simpletablestyle">
+			<thead>
+				<tr>
+					<th ng-show="bookflag">Book</th>
+					<th>Id</th>
+					<th>FlightNo</th>
+					<th>Name</th>
+					<th>Price</th>
+					<th>REST URL</th>
+
+				</tr>
+			</thead>
+			<!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
+			<tr ng-repeat="flight in flights">
+				<td ng-show="bookflag"><input type="radio" ng-model="book.flight" value={{flight.id}}  name="rd2"/></input></td>
+				<td>{{flight.id}}</td>
+				<td>{{flight.flightno}}</td>
+				<td>{{flight.name}}</td>
+				<td>{{flight.price}}</td>
+				<td><a href="rest/flights/{{flight.id}}">/rest/flights/{{flight.id}}</a>
+
+				</td>
+		</table>
+		<div>
+			<!-- The table has a button to manually refresh the values, in case, for example, someone else adds a member -->
+			<input type="button" ng-click="setbook()" name="refresh" id="refresh"
+				value="make a booking" />
+				<SPAN ng-show="bookflag"> Please select a customer and a flight</SPAN><INPUT type="button" ng-show="bookflag" ng-click="submitbook()" value="Confirm" />
+		</div>
+		<div>
+		<em ng-show="bookings.length == 0">No registered customers.</em>
+		<table ng-hide="bookings.length == 0" class="simpletablestyle">
+		<thead>
+				<tr>
+					<th>Id</th>
+					<th>Customername</th>
+					<th>FlightNo</th>
+					<th>Cancel</th> 
+				</tr>
+		  </thead>
+			<!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
+			<tr ng-repeat="booking in bookings">
+				<td>{{booking.id}}</td>
+				<td>{{booking.customer.name}}</td>
+				<td>{{booking.flight.flightno}}</td>
+				<td align="center"> <input type="button" ng-click="cancelbook(booking.id)" value="Cancel"/></td>
+				</td>
+		</table>
+		
+		</div>
+		</form>
+</div>

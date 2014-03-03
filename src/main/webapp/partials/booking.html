@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<div>
+	<h1>Welcome to Online Booking System!</h1>
+
+
+<div>
+	<form ng-show="registermember" ng-submit="creatCumtomer()">
+	<H2>Register a member</H2>
+
+		<fieldset>
+			<legend>Register a member:</legend>
+			<!-- Each input is bound to a property on the prototype newMember object -->
+			<div>
+				<label for="name">Name:</label> <input type="text" name="name"
+					id="name" ng-model="Member.name" placeholder="Your Name" required
+					autofocus />
+			</div>
+			<div>
+				<label for="email">Email:</label> <input type="email" name="email"
+					id="email" ng-model="Member.email" placeholder="Your Email"
+					required />
+			</div>
+			<div>
+				<label for="phoneNumber">Phone:</label> <input type="tel"
+					name="phoneNumber" id="phoneNumber" ng-model="Member.phoneNumber"
+					pattern="[0-9]{10,12}" placeholder="Your Phone " required />
+			</div>
+			<div>
+				<label for="password">Password:</label> <input type="password"
+					ng-model="Member.password" placeholder="Your password" required />
+			</div>
+			<div>
+				<label for="personId">PersonID:</label> <input type="text"
+					ng-model="Member.personid" placeholder="Your personID" required />
+			</div>
+			<div>
+				<input type="submit" id="register" value="Register" /> <input
+					type="button" ng-click="viewbook()" name="cancel" id="cancel"
+					value="Cancel" />
+			</div>
+		</fieldset>
+	</form>
+	<form ng-hide="registermember">
+		<!-- A list of registered members -->
+		<h2>Customer</h2>
+
+		<table class="simpletablestyle">
+			<thead>
+				<tr>
+
+					<th>Name</th>
+					<th>Email</th>
+					<th>Phone</th>
+					<th>PersonID</th>
+
+				</tr>
+			</thead>
+			<!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
+
+			<tr>
+				<td>{{Member.name}}</td>
+				<td>{{Member.email}}</td>
+				<td>{{Member.phoneNumber}}</td>
+				<td>{{Member.personid}}</td>
+			</tr>
+		</table>
+		<h2>Flights</h2>
+		<!-- If there are no members registered, instead of showing the table, we show a simple message. -->
+		<em ng-show="flights.length == 0">No registered flights.</em>
+		<table ng-hide="flights.length == 0" class="simpletablestyle">
+			<thead>
+				<tr>
+					<th ng-show="bookflag">Book</th>
+					<th>Id</th>
+					<th>FlightNo</th>
+					<th>Name</th>
+					<th>Price</th>
+
+				</tr>
+			</thead>
+			<!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
+			<tr ng-repeat="flight in flights">
+				<td ng-show="bookflag"><input type="radio"
+					ng-model="value.flight" value={{flight}} name="rd1" /></td>
+				<td>{{flight.id}}</td>
+				<td>{{flight.flightno}}</td>
+				<td>{{flight.name}}</td>
+				<td>{{flight.price}}</td>
+			</tr>
+		</table>
+		<div>
+			<h2>Taxi</h2>
+			<!-- If there are no members registered, instead of showing the table, we show a simple message. -->
+			<em ng-show="Taxis.length == 0">No registered flights.</em>
+			<table ng-hide="Taxis.length == 0" class="simpletablestyle">
+				<thead>
+					<tr>
+						<th ng-show="bookflag">Book</th>
+						<th>Id</th>
+						<th>TaxiName</th>
+						<th>Quanity</th>
+						<th>Carregistrationid</th>
+						<th>Price</th>
+
+					</tr>
+				</thead>
+				<!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
+				<tr ng-repeat="taxi in taxis">
+					<td ng-show="bookflag"><input type="radio"
+						ng-model="value.taxi" value={{taxi}} name="rd2" /></td>
+					<td>{{taxi.id}}</td>
+					<td>{{taxi.taxiname}}</td>
+					<td>{{taxi.quanity}}</td>
+					<td>{{taxi.carregistrationid}}</td>
+					<td>{{taxi.prize}}</td>
+				</tr>
+			</table>
+		</div>
+		<div>
+			<h2>Hotel</h2>
+			<!-- If there are no members registered, instead of showing the table, we show a simple message. -->
+			<em ng-show="Hotels.length == 0">No registered flights.</em>
+			<table ng-hide="Hotels.length == 0" class="simpletablestyle">
+				<thead>
+					<tr>
+						<th ng-show="bookflag">Book</th>
+						<th>Id</th>
+						<th>HotelNo</th>
+						<th>Place</th>
+						<th>price</th>
+
+					</tr>
+				</thead>
+				<!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
+				<tr ng-repeat="hotel in hotels">
+					<td ng-show="bookflag"><input type="radio"
+						ng-model="value.hotel" value={{hotel}} name="rd3" /></td>
+					<td>{{hotel.id}}</td>
+					<td>{{hotel.flight_no}}</td>
+					<td>{{hotel.fromplace}}</td>
+					<td>{{hotel.current_num}}</td>
+				</tr>
+			</table>
+		</div><div>
+		<input type="date" ng-model="date">  </input>
+		</div>
+		<DIV>
+			<input type="button" ng-click="changeflag()" value="Book"><span ng-show="bookflag">Please
+				select the service above</span><input ng-show="bookflag" type="button" value="confirm"
+				ng-click="book()" />
+		</DIV>
+	</form>
+</div>
+</div>
